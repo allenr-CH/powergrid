@@ -132,7 +132,7 @@ PlotPowerLines = function(x,
   graphics::abline(v = at_x,
                    h = at_y,
                    col = grDevices::grey.colors(1, .95, .95))
-  for(i in seq_along(ncol(y_rec))){
+  for(i in 1:ncol(y_rec)){
     ys = y_rec[, i]
     xs = as.numeric(dimnames(y_rec)[[x_par]])
     if(smooth){
