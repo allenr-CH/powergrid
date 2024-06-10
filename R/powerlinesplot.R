@@ -82,7 +82,7 @@ PlotPowerLines = function(x,
   ## translator for labels; translates if label is available
   Trans = function(x){
     if(!is.null(par_labels)){
-      for(i in seq_along(length(x))){
+      for(i in seq_along(x)){
         if(x[i] %in% names(par_labels)){x[i] = par_labels[x[i]]}
       }
     }
