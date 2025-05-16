@@ -75,9 +75,10 @@ example.</p></dd>
 
 
 <dt id="arg-minimal-target">minimal_target<a class="anchor" aria-label="anchor" href="#arg-minimal-target"></a></dt>
-<dd><p>Logical. Should target be minimally achieved (e.g., a
-power of at least a certain value), or maximially allowed (e.g., a maximum
-expected estimation uncertainty)?</p></dd>
+<dd><p>Logical. Set to TRUE if you aim to achieve a minimum
+value (e.g., a power of <em>at least</em> 90%), or FALSE if you want to allow a
+maximum value (e.g., the width of the expected CI may be <em>at most</em> a
+certain value).</p></dd>
 
 
 <dt id="arg-find-min">find_min<a class="anchor" aria-label="anchor" href="#arg-find-min"></a></dt>
@@ -130,10 +131,10 @@ remaining parameter. Then, <code>Example</code> searches along this vector for t
 to <code>target</code>. Thus, if the sliced out vector contains values of "power" along
 the parameter "effect size", it searches the minimal effect size at which
 the target power is achieved.</p>
-<p>Two complications are made to allow for complete flexibility:</p><ol><li><p>In the above description, <em>minimal</em> can be changed to <em>maximal</em> by setting argument
-<code>find_min</code> to FALSE. This is useful in the situation where one, e.g.,
-searches for the highest standard deviation at which it is still possible to
-find a desirable power.</p></li>
+<p>Two complications are made to allow for complete flexibility:</p><ol><li><p>In the above description, <em>minimal</em> can be changed to <em>maximal</em> by
+setting argument <code>find_min</code> to FALSE. This is useful in the situation where
+one, e.g., searches for the highest standard deviation at which it is still
+possible to find a desirable power.</p></li>
 <li><p>In the above description, <em>at least</em> can be changed to <em>at most</em> by
 setting <code>minimal_target</code> to FALSE. This allows to search, for example, for
 the minimal sample size where the expected confidence interval is smaller
@@ -219,8 +220,8 @@ than a certain desired width.</p></li>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">power_array</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Object of class: power_array</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Containing summary over 20 iterations,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  summarized by function `mean` (for function</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  definition, see attribute `summary_function`).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> summarized by function `mean` (for function</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> definition, see attribute `summary_function`).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Range of values: [0.51, 4.74] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Evaluated at:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       n 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60</span>

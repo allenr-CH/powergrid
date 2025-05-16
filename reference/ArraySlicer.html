@@ -49,7 +49,7 @@ attributes that may be used in functionality of the powergrid package.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ArraySlicer</span><span class="op">(</span><span class="va">x</span>, <span class="va">slicer</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ArraySlicer</span><span class="op">(</span><span class="va">x</span>, slicer <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -64,7 +64,7 @@ attributes that may be used in functionality of the powergrid package.</p>
 <dt id="arg-slicer">slicer<a class="anchor" aria-label="anchor" href="#arg-slicer"></a></dt>
 <dd><p>A list whose named elements define at which dimension (the
 list element names), at which values (the list element values) a slice is
-taken from <code>power_array</code></p></dd>
+taken from <code>power_array</code>. Default NULL returns the unchanged array.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -114,7 +114,7 @@ intact.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   55 0.6512851 0.8853366 0.9780638 0.9976612 0.9998645 0.9999958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   60 0.6849538 0.9085756 0.9854597 0.9987880 0.9999484 0.9999989</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Array of class `power_array` created using</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  PowerGrid.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PowerGrid.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Resulting dimensions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  n, delta.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -134,7 +134,7 @@ intact.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   55 0.6512851 0.8853366 0.9780638 0.9976612 0.9998645 0.9999958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   60 0.6849538 0.9085756 0.9854597 0.9987880 0.9999484 0.9999989</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Array of class `power_array` created using</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  PowerGrid.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PowerGrid.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Resulting dimensions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  n, delta.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -153,7 +153,7 @@ intact.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   55 0.6512851 0.8853366 0.9780638 0.9976612 0.9998645 0.9999958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   60 0.6849538 0.9085756 0.9854597 0.9987880 0.9999484 0.9999989</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Array of class `power_array` created using</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  PowerGrid.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PowerGrid.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Resulting dimensions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  n, delta.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -196,7 +196,7 @@ intact.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   60 0.8619365 0.9854597 0.9994728 0.9999937 1.0000000 1.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Array of class `power_array` created using</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  PowerGrid.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PowerGrid.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Resulting dimensions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  n, delta, sd.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
