@@ -42,11 +42,12 @@ confidence intervals. Or an exploration for planning recruitment under
 various scenarios.
 
 ## Functions covered
-T his vignette covers the following functions of `powergrid`
+This vignette covers the following functions of `powergrid`
 
-- `PowerGrid` for evaluating the power across a grid, with and without simualtion
-- `Example` for inspecting the relation between power and sample size
-  in a specific scenario
+- `PowerGrid` for evaluating the power across a grid, with and without simulation
+- `Example` for inspecting the parameters needed to reach certain
+criteria in a specific scenario (e.g. minimum sample size for a specified
+power).
 - `Powerplot` Graphical exploration of power under different scenarios
 - `GridPlot` Graphical exploration of power under even more scenarios
 
@@ -59,6 +60,12 @@ devtools::install_github("SwissClinicalTrialOrganisation/powergrid",
                          build_vignette = TRUE)
 
 ```
+
+<!-- I think the user understanding could be improved by having an even -->
+<!-- example. Especially as users may not have used sse -->
+# Trivial use case
+
+At its heart powergrid simply runs a function with different inputs and structures the outputs.
 
 # Typical use case
 I describe two basic use cases here. Both concern studying the relation between
