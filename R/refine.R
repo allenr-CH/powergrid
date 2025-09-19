@@ -2,12 +2,12 @@
 ## objects:
 ##
 ## 1) to perform additional iterations (only for power_array where attr
-## keep_sims = TRUE)
+## keep_iters = TRUE)
 ##
 ## 2) to evaluate a function on additional locations of the parameter
 ## grid.
 
-##' @title Refine or Extend Power Array
+##' @title Refine or extend the result of PowerGrid
 ##' @description Add further results to an existing power_array (created by
 ##'   PowerGrid or by another call of Refine), adding further values in
 ##'   \code{pars} and/or larger \code{n_iter}.
@@ -23,12 +23,15 @@
 ##'   in arrays where some crossings of parameters include more iterations than
 ##'   others. This is a feature, not a bug. May result in less aesthetic
 ##'   plotting, however.
+##'
+##'   For details about handling the random seed, see \code{\link{PowerGrid}}.
 ##' @param old the object of class `power_array` to extend
 ##' @param n_iter_add the number of iterations to *add* to old
 ##' @param pars the new parameter grid to evaluate across
 ##' @param ... further arguments passed on to PowerGrid internally.
 ##' @return object of class `power_array`, containing old, extended by
 ##'   \code{pars} and/or \code{n_iter_add}.
+##' @seealso \code{\link{PowerGrid}}
 ##' @author Gilles Dutilh
 ##' @examples
 ##' ## ============================================
@@ -42,7 +45,7 @@
 ##'                      n_iter = 3,
 ##'                      summarize = FALSE)
 ##' refined = Refine(original, n_iter_add = 2, pars = list(x = 2:3))
-##' ## note that refined does not have each parameter sampled in each simulation
+##' ## note that refined does not have each parameter sampled in each iteration
 ##'
 ##' ## ============================================
 ##' ## a realistic example, simply increasing n_iter
@@ -81,6 +84,7 @@
 ##' summary(power_array)
 ##' PowerPlot(power_array)
 ##' ## Based on figure above, let's look at n between 50 and 100, delta around .9
+##' \donttest{
 ##' sse_pars = list(
 ##'   n = seq(50, 100, 5),
 ##'   delta = seq(.7, 1.1, .05))
@@ -102,15 +106,18 @@
 ##'           summary_function = function(x)mean(x, na.rm = TRUE),
 ##'           title = 'Zoomed in')
 ##' layout(1)
+##' }
 ##' @export
 Refine = function(old, n_iter_add = 1, pars = NULL, ...){
   if (is.null(pars)) {pars = attr(old, 'pars')}
+  ## save seed
+  random_seed = .Random.seed
   ## copy the original attributes to add later
   copy_attr = attributes(old)
   ## number of zeros later needed for iter-dimension
   nzeros = max(ceiling(log(n_iter_add, 10)),
                ceiling(log(attr(old, 'n_iter'), 10)))
-  ## Perform simulation in grid, using, where relevant, the attributes
+  ## Perform iterations in grid, using, where relevant, the attributes
   ## of old.
   new = PowerGrid(pars = pars,
                   fun = copy_attr$sim_function,
@@ -129,15 +136,15 @@ Refine = function(old, n_iter_add = 1, pars = NULL, ...){
   ##
   ## Note that I reuse object name to save memory space, making code much
   ## less easy to read.
-  old = stats::ftable(old, col.vars = 'sim') # flat table
-  attr(old, 'col.vars')$sim = as.character(1:ncol(old))
-  old = as.data.frame(old) # expanded grid pars * sims
-  new = stats::ftable(new, col.vars = 'sim') # flat table
-  attr(new, 'col.vars')$sim = as.character(1:ncol(new))
-  new = as.data.frame(new)# expanded grid pars * sims
-  ## Labels for sims need unique names between sets
-  old$sim = paste0('old_', sprintf(paste0('%0', nzeros, '.0f'), old$sim))
-  new$sim = paste0('upd_', sprintf(paste0('%0', nzeros, '.0f'), new$sim))
+  old = stats::ftable(old, col.vars = 'iter') # flat table
+  attr(old, 'col.vars')$iter = as.character(1:ncol(old))
+  old = as.data.frame(old) # expanded grid pars * iterations
+  new = stats::ftable(new, col.vars = 'iter') # flat table
+  attr(new, 'col.vars')$iter = as.character(1:ncol(new))
+  new = as.data.frame(new)# expanded grid pars * iterations
+  ## Labels for iters need unique names between sets
+  old$iter = paste0('old_', sprintf(paste0('%0', nzeros, '.0f'), old$iter))
+  new$iter = paste0('upd_', sprintf(paste0('%0', nzeros, '.0f'), new$iter))
   new = rbind(old, new) # new now contains old as well!
   ##
   ## If pars (new) are different than pars (old) make a grid with all
@@ -175,7 +182,9 @@ Refine = function(old, n_iter_add = 1, pars = NULL, ...){
   copy_attr$dim = dim(new)
   copy_attr$dimnames = dimnames(new)
   copy_attr$n_iter = copy_attr$n_iter + n_iter_add
+  copy_attr$random_seed[[length(copy_attr$random_seed) + 1]] = random_seed
   ## set attributes
   attributes(new) = copy_attr
   return(new)
 }
+

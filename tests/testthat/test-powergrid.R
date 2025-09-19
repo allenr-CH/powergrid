@@ -1,5 +1,6 @@
+rm(list=ls())
 ## ===============================================================
-#' TODO: I think this should be in test-SummariseSims no?
+#' TODO: I think this should be in test-SummarizeIterations no?
 
 ## Test warning summarizing summarized object
 PowFun <- function(n, delta, sd){
@@ -18,7 +19,7 @@ power_array = PowerGrid(pars = sse_pars, fun = PowFun,
 test_that(
   "trying to summarize an object that is already summarized throws a warning",
   {expect_error(
-    SummarizeSims(power_array, summary_function = mean)
+    SummarizeIterations(power_array, summary_function = mean)
   )}
 )
 
@@ -47,3 +48,41 @@ test_that(
   "Reverse parameter specification leads to same array contents (attr not tested)",
   {expect_equal(fwd_power_array, rev_power_array, ignore_attr = TRUE)}
 )
+
+
+## =============================================================================
+#' Test PowerGrid() with multiple outputs
+
+#' Arbitary function that only sometimes returns both values.
+ClosedFunBadReturn =
+  function(n, delta, sd){
+    t2side = power.t.test(n = n, delta = delta, sd = sd, alternative = "two")$power
+    t1side = power.t.test(n = n, delta = delta, sd = sd, alternative = "one")$power
+
+    out <- c("one-sided" = t1side)
+    if(sd%%0.5 == 0) out = c(out, "two.sided" = t2side)
+
+    return(out)
+  }
+
+test_that(
+  "Error occurs when multiple returns are not equal",
+  {
+    expect_error(PowerGrid(pars = fwd_closed_pars, fun = ClosedFunBadReturn, n_iter = 3));
+    expect_error(PowerGrid(pars = fwd_closed_pars, fun = ClosedFunBadReturn))
+  })
+
+ClosedFunTwoReturn =
+  function(n, delta, sd){
+    t2side = power.t.test(n = n, delta = delta, sd = sd, alternative = "two")$power
+    t1side = power.t.test(n = n, delta = delta, sd = sd, alternative = "one")$power
+    return(c("one-sided" = t1side, "two.sided" = t2side))
+  }
+
+two_return_power_array = PowerGrid(pars = fwd_closed_pars, fun = ClosedFunTwoReturn)
+
+test_that("fun_out names returned correctly",
+          {expect_identical(dimnames(two_return_power_array)$fun_out,
+                           c("one-sided", "two.sided"))}
+)
+

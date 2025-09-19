@@ -19,17 +19,40 @@
 An array of class \code{power_grid}
 }
 \description{
-Method for indexing [] of objects of class power_array. The method
-makes sure that the resulting array is of class power_array and
-keeps and updates the object's attributes. These attributes are
-needed for various functions in the powergrid package to work
-well.
+Method for indexing [] of objects of class power_array. The method makes
+sure that the resulting array is of class power_array and keeps and updates
+the object's attributes. These attributes are needed for various functions
+in the powergrid package to work well.
 ##'
 The indexing functions as normal indexing, but note that drop is
 FALSE by default, so that the resulting array has the same
 dimensions as the original array. The number of levels at each
 dimension may be reduced, however.
 ##'
+}
+\examples{
+## Define grid of assumptions to study:
+sse_pars = list(
+  n = seq(from = 10, to = 50, by = 20),         # sample size
+  delta = seq(from = 0.5, to = 1.5, by = 0.5), # effect size
+  sd = seq(.1, 1, .3))                        # standard deviation
+
+## Define function that calculates power based on these assumptions:
+PowFun <- function(n, delta, sd){
+  ptt = power.t.test(n = n/2, delta = delta, sd = sd,
+                     sig.level = 0.05)
+  return(ptt$power)
+}
+
+## Evaluate at each combination of assumptions: 
+powarr = PowerGrid(pars = sse_pars, fun = PowFun, n_iter = NA)
+powarr[2, 1, ] # gives the same as
+powarr['30', '0.5', ]
+}
+\seealso{
+\code{\link{PowerGrid}}
+\code{\link{ArraySlicer}} for a different method of reducing the
+dimensions of an array of class power_array.
 }
 \author{
 Gilles Dutilh

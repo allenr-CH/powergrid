@@ -2,7 +2,7 @@
 % Please edit documentation in R/refine.R
 \name{Refine}
 \alias{Refine}
-\title{Refine or Extend Power Array}
+\title{Refine or extend the result of PowerGrid}
 \usage{
 Refine(old, n_iter_add = 1, pars = NULL, ...)
 }
@@ -37,6 +37,8 @@ Note that certain combinations of \code{pars} and \code{n_iter_add} result
 in arrays where some crossings of parameters include more iterations than
 others. This is a feature, not a bug. May result in less aesthetic
 plotting, however.
+
+For details about handling the random seed, see \code{\link{PowerGrid}}.
 }
 \examples{
 ## ============================================
@@ -50,7 +52,7 @@ original = PowerGrid(pars = pars,
                      n_iter = 3,
                      summarize = FALSE)
 refined = Refine(original, n_iter_add = 2, pars = list(x = 2:3))
-## note that refined does not have each parameter sampled in each simulation
+## note that refined does not have each parameter sampled in each iteration
 
 ## ============================================
 ## a realistic example, simply increasing n_iter
@@ -89,6 +91,7 @@ power_array = PowerGrid(pars = sse_pars,
 summary(power_array)
 PowerPlot(power_array)
 ## Based on figure above, let's look at n between 50 and 100, delta around .9
+\donttest{
 sse_pars = list(
   n = seq(50, 100, 5),
   delta = seq(.7, 1.1, .05))
@@ -110,6 +113,10 @@ PowerPlot(power_array_up,
           summary_function = function(x)mean(x, na.rm = TRUE),
           title = 'Zoomed in')
 layout(1)
+}
+}
+\seealso{
+\code{\link{PowerGrid}}
 }
 \author{
 Gilles Dutilh
