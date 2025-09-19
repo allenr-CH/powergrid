@@ -49,13 +49,13 @@
 ##'   uncertainty).
 ##' @param example If not NULL, a list of length one, defining at which value
 ##'   (list element value) of which parameter (list element name) the example is
-##'   drawn for a power of \code{target_value}. You may supply a vector longer than 1
-##'   for multiple examples.
+##'   drawn for a power of \code{target_value}. You may supply a vector longer
+##'   than 1 for multiple examples.
 ##' @param method Method used for finding the required \code{par_to_search}
-##'   needed to achieve \code{target_value}. Either \code{step}: walking in steps
-##'   along \code{par_to_search} or \code{lm}: Interpolating assuming a linear
-##'   relation between \code{par_to_search} and \code{(qnorm(x) + qnorm(1 -
-##'   0.05)) ^ 2}. The setting \code{lm} is inspired on the implementation in
+##'   needed to achieve \code{target_value}. Either \code{step}: walking in
+##'   steps along \code{par_to_search} or \code{lm}: Interpolating assuming a
+##'   linear relation between \code{par_to_search} and \code{(qnorm(x) + qnorm(1
+##'   - 0.05)) ^ 2}. The setting \code{lm} is inspired on the implementation in
 ##'   the \code{sse} package by Thomas Fabbro.
 ##' @param target_levels For which levels of power (or whichever variable is
 ##'   contained in x) lines are drawn.
@@ -63,9 +63,6 @@
 ##'   arrows. Therefore, use AddExample.
 ##' @param shades_of_grey Logical indicating whether greylevels are painted in
 ##'   addition to isolines to show power levels.
-##' @param shades_legend Logical indicating whether a legend for the shading is
-##'   added. Note that this legend is drawn in a separate plotting region, and
-##'   does effect setting \code{par(mfrow)} of the current plotting device.
 ##' @param example_text When an example is drawn, should the the required par
 ##'   value be printed alongside the arrow(s)
 ##' @param title Character string, if not \code{NULL}, replaces default figure
@@ -87,7 +84,8 @@
 ##' @seealso \code{\link{PowerGrid}}, \code{\link{AddExample}},
 ##'   \code{\link{Example}}, \code{\link{GridPlot}} for plotting
 ##'   interdependencies of 3 parameters.
-##' @return Nothing
+##' @return A list containing the coordinate arguments x, y, and z, as passed to
+##'   `image()` internally.
 ##' @author Gilles Dutilh
 ##' @examples
 ##' ## ============================================
@@ -182,7 +180,6 @@ PowerPlot =
            target_levels = c(.8, .9, .95), # which power iso lines to draw
            col = grDevices::grey.colors(1, .2, .2),
            shades_of_grey = TRUE, # do you want shades of grey on background
-           shades_legend = FALSE, # do you want a legend for the shades
            example_text = TRUE, # do you want a text next to the Example arrow
            title = NULL,
            par_labels = NULL,
@@ -334,29 +331,15 @@ PowerPlot =
   } else {
     ## the most typical case:
     ## ============================================
-    ## Legend plot if needed (shades of grey & shades legend are requested)
-    ## is a separate plotting region
-    if(shades_of_grey && shades_legend) {
-      graphics::layout(t(2:1), widths = c(5, 1)) # in this order, so that
-                                        # you can edit the main fig afterwards
-      graphics::par(mar = c(10, 1, 10, 3))
-      graphics::image(1, seq_along(legend_ats), t(rev(legend_ats)),
-                      axes = FALSE, xlab = '', ylab = '', col = rev(legend_cols))
-      graphics::text(1, seq_along(legend_ats),
-                     labels = sprintf('%1.1f', legend_ats),
-                     cex = 1.5, col = grDevices::grey.colors(1, .2, .2))
-      graphics::mtext(side = 3, line = 2, text = 'Power')
-    }
-    ## ============================================
     ## Main plot.
     ## Image contains shades of grey or white, creating higher level plot
-    graphics::par(las = 1, mar = c(5.1, 4.1, 4.1, 2.1))
-    graphics::image(as.numeric(margins_toplot[[2]]),
-                    as.numeric(margins_toplot[[1]]),
-                    t(array_toplot),
+    image_x = as.numeric(margins_toplot[[2]])
+    image_y = as.numeric(margins_toplot[[1]])
+    image_z = t(array_toplot)
+    graphics::image(image_x, image_y, image_z,
                     ylab = Trans(names(margins_toplot)[[1]]),
                     xlab = Trans(names(margins_toplot)[[2]]),
-                    axes = FALSE, col = image_cols, main = title, ...)
+                    axes = FALSE, col = image_cols, main = title, las = 1,...)
     ##
     ## grid lines
     graphics::abline(h = margins_toplot[[1]], v = margins_toplot[[2]], col = 'white')
@@ -407,6 +390,7 @@ PowerPlot =
                col = col[1],
                example_text = example_text)
   }
+  invisible(list('image_args' = list('x' = image_x, 'y' = image_y, 'z' = image_z)))
 }
 
 ## ======================================================= lower level function
@@ -473,7 +457,7 @@ PowerPlot =
 ##' @param ... Further arguments are passed to the two calls of function
 ##'   \code{graphics::arrows} drawing the nicked arrow.
 ##' @seealso \code{\link{PowerPlot}}, \code{\link{GridPlot}}
-##' @return Nothing
+##' @return invisibly NULL
 ##' @author Gilles Dutilh
 ##' @examples
 ##'
@@ -657,4 +641,5 @@ AddExample = function(x,
     graphics::text(x = x0, y = y_ex_value, labels = y_ex_value,
                    adj = c(0, -1), col = col, lwd = lwd)
   }
+  invisible(NULL)
 }
